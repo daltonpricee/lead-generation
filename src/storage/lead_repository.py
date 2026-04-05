@@ -12,6 +12,8 @@ class LeadRepository:
 
     def __init__(self, filepath: str):
         self.filepath = filepath
+        # Make sure parent directory exists
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
     def load_existing_companies(self) -> Set[str]:
         """
@@ -23,7 +25,7 @@ class LeadRepository:
         if not os.path.exists(self.filepath):
             return set()
 
-        df = pd.read_excel(self.filepath)
+        df = pd.read_excel(self.filepath, engine='openpyxl')
         return set(df["Company"].str.lower())
 
     def save(self, leads: List[Lead]) -> None:
@@ -46,9 +48,10 @@ class LeadRepository:
         ])
 
         if os.path.exists(self.filepath):
-            existing = pd.read_excel(self.filepath)
+            existing = pd.read_excel(self.filepath, engine='openpyxl')
             combined = pd.concat([existing, new_data], ignore_index=True)
         else:
             combined = new_data
 
-        combined.to_excel(self.filepath, index=False)
+        # Save to Excel
+        combined.to_excel(self.filepath, index=False, engine='openpyxl')

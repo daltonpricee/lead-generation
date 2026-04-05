@@ -26,6 +26,8 @@ def main() -> None:
         if lead.company.lower() in existing_companies:
             continue  # skip duplicates
 
+        print(f"Processing: {lead.company}")
+
         # STEP 3: (optional) enrich if website exists
         if lead.website:
             contact = collector.scrape_contact_info(lead.website)
@@ -38,6 +40,7 @@ def main() -> None:
     if new_leads:
         repo.save(new_leads)
         print(f"Added {len(new_leads)} new leads")
+        print("Saved to Excel: data/leads.xlsx")
     else:
         print("No new leads found")
 

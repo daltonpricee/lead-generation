@@ -4,24 +4,36 @@ from src.models.lead import Lead
 
 class GoogleMapsSource:
     """
-    Simulated Google Maps business source.
-
-    NOTE:
-    Replace this later with real scraping or API.
+    Demo Google Maps source that simulates discovering local businesses.
     """
 
     def search(self, query: str) -> List[Lead]:
         """
-        Returns a list of businesses for a given search query.
+        Simulates searching for businesses.
 
         Args:
-            query (str): Search term (e.g., "plumbers phoenix").
+            query (str): Search term.
 
         Returns:
-            List[Lead]: List of discovered leads.
+            List[Lead]: Fake but realistic leads.
         """
-        # TEMP: Replace with real logic later
         return [
-            Lead(name="Mike's Plumbing", company="Mike's Plumbing"),
-            Lead(name="Desert HVAC Co", company="Desert HVAC Co"),
+            Lead(
+                name="Mike Johnson",
+                company="Mike's Plumbing",
+                website="https://mikesplumbingaz.com",
+                linkedin_url="https://linkedin.com/company/mikesplumbing"
+            ),
+            Lead(
+                name="Sarah Lee",
+                company="Desert Air HVAC",
+                website="https://desertairhvac.com",
+                linkedin_url="https://linkedin.com/company/desertairhvac"
+            ),
+            Lead(
+                name="Carlos Ramirez",
+                company="Phoenix Home Roofing",
+                website="https://phxroofingpros.com",
+                linkedin_url="https://linkedin.com/company/phxroofing"
+            ),
         ]

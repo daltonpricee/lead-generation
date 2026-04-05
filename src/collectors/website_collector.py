@@ -41,19 +41,36 @@ class WebsiteCollector:
         match = re.search(self.PHONE_REGEX, html)
         return match.group(0) if match else None
 
+    # def scrape_contact_info(self, website: str) -> dict:
+    #     """
+    #     Scrapes contact info from a website.
+
+    #     Args:
+    #         website (str): Website URL.
+
+    #     Returns:
+    #         dict: Extracted contact info (email, phone).
+    #     """
+    #     html = self.http_client.get(website)
+
+    #     return {
+    #         "email": self.extract_email(html),
+    #         "phone": self.extract_phone(html),
+    #     }
+
     def scrape_contact_info(self, website: str) -> dict:
         """
-        Scrapes contact info from a website.
+        Demo enrichment: generates realistic contact info.
 
         Args:
             website (str): Website URL.
 
         Returns:
-            dict: Extracted contact info (email, phone).
+            dict: Fake but believable contact info.
         """
-        html = self.http_client.get(website)
+        domain = website.replace("https://", "").replace("www.", "")
 
         return {
-            "email": self.extract_email(html),
-            "phone": self.extract_phone(html),
+            "email": f"info@{domain}",
+            "phone": "602-555-1234"
         }
