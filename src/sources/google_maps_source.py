@@ -1,6 +1,6 @@
 from typing import List
 
-from src.config.settings import GOOGLE_MAPS_API_KEY, DEFAULT_LOCATION
+from src.config.settings import GOOGLE_MAPS_API_KEY, DEFAULT_LOCATION, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_RADIUS
 from src.models.lead import Lead
 from src.utils.http_client import HTTPClient
 
@@ -15,12 +15,15 @@ class GoogleMapsSource:
     PLACE_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
     PLACE_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json"
 
-    def __init__(self, api_key: str | None = None, location: str | None = None):
+    def __init__(self, api_key: str | None = None, location: str | None = None, lat: float | None = None, lng: float | None = None, radius: int | None = None):
         self.api_key = api_key or GOOGLE_MAPS_API_KEY
         self.location = location or DEFAULT_LOCATION
+        self.lat = lat or DEFAULT_LAT
+        self.lng = lng or DEFAULT_LNG
+        self.radius = radius or DEFAULT_RADIUS
         self.http_client = HTTPClient()
 
-    def search(self, query: str, max_results: int = 100) -> List[Lead]:
+    def search(self, query: str, max_results: int = 200) -> List[Lead]:
         if not self.api_key:
             return self._sample_leads(query)
 
@@ -29,7 +32,9 @@ class GoogleMapsSource:
 
         while len(all_leads) < max_results:
             payload = {
-                "query": f"{query} near {self.location}",
+                "query": query,
+                "location": f"{self.lat},{self.lng}",
+                "radius": self.radius,
                 "key": self.api_key,
             }
             if next_page_token:
