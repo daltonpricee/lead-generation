@@ -14,6 +14,9 @@ class Lead:
         email (Optional[str]): Extracted or enriched email.
         phone (Optional[str]): Extracted phone number.
         linkedin_url (Optional[str]): LinkedIn profile or company page.
+        source (Optional[str]): Lead source (Google Maps, Thumbtack, etc.).
+        industry (Optional[str]): Business industry tag.
+        date_added (Optional[str]): Date the lead was discovered.
     """
     name: str
     company: str
@@ -21,3 +24,6 @@ class Lead:
     email: Optional[str] = None
     phone: Optional[str] = None
     linkedin_url: Optional[str] = None
+    source: Optional[str] = None
+    industry: Optional[str] = None
+    date_added: Optional[str] = None

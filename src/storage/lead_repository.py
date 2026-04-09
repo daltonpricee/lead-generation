@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 import pandas as pd
 from typing import List, Set
 
@@ -43,6 +45,9 @@ class LeadRepository:
                 "Email": l.email,
                 "Phone": l.phone,
                 "LinkedIn": l.linkedin_url,
+                "Source": l.source,
+                "Industry": l.industry,
+                "Date Added": l.date_added or datetime.now(),
             }
             for l in leads
         ])

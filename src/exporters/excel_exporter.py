@@ -25,6 +25,9 @@ class ExcelExporter:
                 "Email": lead.email,
                 "Phone": lead.phone,
                 "LinkedIn": lead.linkedin_url,
+                "Source": lead.source,
+                "Industry": lead.industry,
+                "Date Added": lead.date_added,
             }
             for lead in leads
         ]

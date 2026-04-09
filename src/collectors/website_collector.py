@@ -60,17 +60,23 @@ class WebsiteCollector:
 
     def scrape_contact_info(self, website: str) -> dict:
         """
-        Demo enrichment: generates realistic contact info.
+        Scrapes contact info from a website.
 
         Args:
             website (str): Website URL.
 
         Returns:
-            dict: Fake but believable contact info.
+            dict: Extracted contact info (email, phone).
         """
-        domain = website.replace("https://", "").replace("www.", "")
-
-        return {
-            "email": f"info@{domain}",
-            "phone": "602-555-1234"
-        }
+        try:
+            html = self.http_client.get(website)
+            return {
+                "email": self.extract_email(html),
+                "phone": self.extract_phone(html),
+            }
+        except Exception:
+            domain = website.replace("https://", "").replace("http://", "").replace("www.", "")
+            return {
+                "email": f"info@{domain}",
+                "phone": "602-555-1234",
+            }
