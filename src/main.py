@@ -11,6 +11,7 @@ from src.sources.google_maps_source import GoogleMapsSource
 from src.sources.thumbtack_source import ThumbtackSource
 from src.sources.yelp_source import YelpSource
 from src.sources.foursquare_source import FoursquareSource
+from src.sources.bing_source import BingSource
 from src.storage.lead_repository import LeadRepository
 from src.utils.http_client import HTTPClient
 
@@ -26,6 +27,7 @@ def main() -> None:
     thumbtack_source = ThumbtackSource()
     yelp_source = YelpSource()
     foursquare_source = FoursquareSource()
+    bing_source = BingSource()
     repo = LeadRepository(LEADS_OUTPUT_FILEPATH)
 
     http_client = HTTPClient()
@@ -37,8 +39,9 @@ def main() -> None:
     thumbtack_leads = thumbtack_source.search(THUMBTACK_SEARCH_QUERY, max_results=200)
     yelp_leads = yelp_source.search(GOOGLE_MAPS_SEARCH_QUERY, max_results=200)
     foursquare_leads = foursquare_source.search(GOOGLE_MAPS_SEARCH_QUERY, max_results=200)
+    bing_leads = bing_source.search(GOOGLE_MAPS_SEARCH_QUERY, max_results=200)
 
-    all_leads = google_leads + thumbtack_leads + yelp_leads + foursquare_leads
+    all_leads = google_leads + thumbtack_leads + yelp_leads + foursquare_leads + bing_leads
 
     # TODO: Add more sources like Foursquare, Yellow Pages API (if available), or custom scrapers
     # Example: foursquare_source = FoursquareSource()
