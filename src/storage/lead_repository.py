@@ -12,8 +12,8 @@ class LeadRepository:
     Handles storing and retrieving leads from disk.
     """
 
-    def __init__(self, filepath: str):
-        self.filepath = filepath
+    def __init__(self, filepath: str) -> None:
+        self.filepath: str = filepath
         # Make sure parent directory exists
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
 

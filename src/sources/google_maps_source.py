@@ -52,8 +52,7 @@ class GoogleMapsSource:
                     continue
 
                 user_ratings = place.get("user_ratings_total", 0)
-                if user_ratings and user_ratings > 300:
-                    continue
+            if user_ratings and user_ratings > 500:  # Allow medium-sized companies
 
                 website, phone = self._fetch_place_details(place.get("place_id"))
                 all_leads.append(

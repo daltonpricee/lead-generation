@@ -52,7 +52,7 @@ class YelpSource:
                         continue
 
                     review_count = biz.get("review_count", 0)
-                    if review_count > 300:  # Similar filter to avoid big companies
+                    if review_count > 500:  # Allow medium-sized companies
                         continue
 
                     website = biz.get("url")  # Yelp page, not business website

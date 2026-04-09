@@ -1,4 +1,5 @@
 import requests
+from typing import Any, Dict
 
 
 class HTTPClient:
@@ -24,7 +25,7 @@ class HTTPClient:
         response.raise_for_status()
         return response.text
 
-    def get_json(self, url: str, params: dict | None = None, headers: dict | None = None, timeout: int = 10) -> dict:
+    def get_json(self, url: str, params: Dict[str, str | int] | None = None, headers: Dict[str, str] | None = None, timeout: int = 10) -> Dict[str, Any]:
         """
         Sends a GET request and returns JSON.
 
