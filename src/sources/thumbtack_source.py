@@ -22,7 +22,7 @@ class ThumbtackSource:
         self.location = location or DEFAULT_LOCATION
         self.http_client = HTTPClient()
 
-    def search(self, query: str, max_results: int = 20) -> List[Lead]:
+    def search(self, query: str, max_results: int = 100) -> List[Lead]:
         if not self.api_key:
             return self._sample_leads(query)
 
@@ -71,25 +71,37 @@ class ThumbtackSource:
             return self._sample_leads(query)
 
     def _sample_leads(self, query: str) -> List[Lead]:
-        return [
-            Lead(
-                name="Ariel Gonzalez",
-                company="Phoenix Construction Co",
-                website="https://phoenixconstructionco.com",
-                email=None,
-                phone=None,
-                linkedin_url=None,
-                source="Thumbtack (sample)",
-                industry="Construction",
-            ),
-            Lead(
-                name="Janet Carter",
-                company="Ridge Line Builders",
-                website="https://ridgelinebuilders.com",
-                email=None,
-                phone=None,
-                linkedin_url=None,
-                source="Thumbtack (sample)",
-                industry="Construction",
-            ),
+        import random
+        companies = [
+            "Sunset Construction Services", "Pinnacle Builders", "Ridge Line Builders",
+            "Valley Concrete", "Miami Home Renovations", "Palm Beach Contractors",
+            "Fort Lauderdale Builders", "South Florida Excavation", "Coastal Construction Co",
+            "Tropical Builders", "Everglades Contractors", "Beachside Renovations",
+            "Key West Construction", "Coral Gables Builders", "Brickell Contractors",
+            "Wynwood Renovations", "Little Havana Builders", "Doral Construction",
+            "Kendall Contractors", "Homestead Builders", "Cutler Bay Renovations",
+            "Pinecrest Construction", "South Miami Builders", "Gables Contractors",
+            "Bal Harbour Renovations", "Surfside Builders", "Sunny Isles Construction",
+            "Aventura Contractors", "Hallandale Builders", "Hollywood Renovations",
+            "Pembroke Pines Construction", "Miramar Contractors", "Davie Builders",
+            "Cooper City Renovations", "Weston Construction", "Plantation Contractors",
+            "Sunrise Builders", "Lauderhill Renovations", "Tamarac Construction",
+            "Coral Springs Contractors", "Parkland Builders", "Margate Renovations",
+            "Coconut Creek Construction", "Deerfield Beach Contractors", "Boca Raton Builders",
+            "Delray Beach Renovations", "Boynton Beach Construction", "Lake Worth Contractors",
+            "West Palm Beach Builders", "Palm Beach Gardens Renovations", "Jupiter Construction",
+            "Stuart Contractors", "Port St. Lucie Builders", "Fort Pierce Renovations"
         ]
+        leads = []
+        for i, company in enumerate(companies[:50]):  # Limit to 50 samples
+            leads.append(Lead(
+                name=f"Contact {i+1}",
+                company=company,
+                website=f"https://{company.lower().replace(' ', '')}.com",
+                email=None,
+                phone=None,
+                linkedin_url=None,
+                source="Thumbtack (sample)",
+                industry="Construction",
+            ))
+        return leads

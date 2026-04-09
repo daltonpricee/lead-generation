@@ -20,46 +20,61 @@ class GoogleMapsSource:
         self.location = location or DEFAULT_LOCATION
         self.http_client = HTTPClient()
 
-    def search(self, query: str, max_results: int = 25) -> List[Lead]:
+    def search(self, query: str, max_results: int = 100) -> List[Lead]:
         if not self.api_key:
             return self._sample_leads(query)
 
-        payload = {
-            "query": f"{query} near {self.location}",
-            "key": self.api_key,
-        }
+        all_leads: List[Lead] = []
+        next_page_token = None
 
-        response = self.http_client.get_json(self.PLACE_SEARCH_URL, params=payload)
-        results = response.get("results", [])
-        leads: List[Lead] = []
+        while len(all_leads) < max_results:
+            payload = {
+                "query": f"{query} near {self.location}",
+                "key": self.api_key,
+            }
+            if next_page_token:
+                payload["pagetoken"] = next_page_token
 
-        for place in results[:max_results]:
-            company = place.get("name")
-            if not company:
-                continue
+            response = self.http_client.get_json(self.PLACE_SEARCH_URL, params=payload)
+            results = response.get("results", [])
+            next_page_token = response.get("next_page_token")
 
-            user_ratings = place.get("user_ratings_total", 0)
-            if user_ratings and user_ratings > 300:
-                continue
+            for place in results:
+                if len(all_leads) >= max_results:
+                    break
+                company = place.get("name")
+                if not company:
+                    continue
 
-            website, phone = self._fetch_place_details(place.get("place_id"))
-            leads.append(
-                Lead(
-                    name="",
-                    company=company,
-                    website=website,
-                    email=None,
-                    phone=phone,
-                    linkedin_url=None,
-                    source="Google Maps",
-                    industry="Construction",
+                user_ratings = place.get("user_ratings_total", 0)
+                if user_ratings and user_ratings > 300:
+                    continue
+
+                website, phone = self._fetch_place_details(place.get("place_id"))
+                all_leads.append(
+                    Lead(
+                        name="",
+                        company=company,
+                        website=website,
+                        email=None,
+                        phone=phone,
+                        linkedin_url=None,
+                        source="Google Maps",
+                        industry="Construction",
+                    )
                 )
-            )
 
-        if not leads:
+            if not next_page_token:
+                break
+
+            # Wait a bit for next page token to become valid
+            import time
+            time.sleep(2)
+
+        if not all_leads:
             return self._sample_leads(query)
 
-        return leads
+        return all_leads
 
     def _fetch_place_details(self, place_id: str | None) -> tuple[str | None, str | None]:
         if not place_id:
@@ -90,7 +105,7 @@ class GoogleMapsSource:
             Lead(
                 name="Nina Alvarez",
                 company="Pinnacle Builders",
-                website="https://pinnaclebuildersaz.com",
+                website="https://pinnaclebuildersfl.com",
                 email=None,
                 phone=None,
                 linkedin_url=None,
@@ -98,9 +113,19 @@ class GoogleMapsSource:
                 industry="Construction",
             ),
             Lead(
-                name="Ari Becker",
-                company="Ridge Line Builders",
-                website="https://ridgelinebuilders.com",
+                name="Carlos Ramirez",
+                company="Miami Home Renovations",
+                website="https://mihomesreno.com",
+                email=None,
+                phone=None,
+                linkedin_url=None,
+                source="Google Maps (sample)",
+                industry="Construction",
+            ),
+            Lead(
+                name="Sofia Lopez",
+                company="Palm Beach Contractors",
+                website="https://palmbeachcontractors.com",
                 email=None,
                 phone=None,
                 linkedin_url=None,

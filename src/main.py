@@ -26,8 +26,8 @@ def main() -> None:
 
     existing_companies = repo.load_existing_companies()
 
-    google_leads = google_source.search(GOOGLE_MAPS_SEARCH_QUERY, max_results=30)
-    thumbtack_leads = thumbtack_source.search(THUMBTACK_SEARCH_QUERY, max_results=30)
+    google_leads = google_source.search(GOOGLE_MAPS_SEARCH_QUERY, max_results=100)
+    thumbtack_leads = thumbtack_source.search(THUMBTACK_SEARCH_QUERY, max_results=100)
 
     all_leads = google_leads + thumbtack_leads
     new_leads = []
